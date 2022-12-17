@@ -7,7 +7,6 @@ export function ObjectItem(props) {
 
     function onClicks() {
         props.handleEdit()
-        //props.holdEditObject()
     }
 
     return (

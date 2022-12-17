@@ -12,32 +12,88 @@ function App() {
 
   // Object/or set of objects sent to ObjectList
   const [object, setObject] = useState([])
-  // Input sent from FilterBar for the specific get request
+  // State for languages
+  const [language, setLanguage] = useState('englishDefinitions')
+  // Input sent from FilterBar for the specific English get request
   const [input, setInput] = useState("")
   // Foreign search input sent from FilterBar for the specific get request
   const [translateSearch, setTranslateSearch] = useState()
-  // Visibility for the 'create new object' form
+
+  // Visibility for the 'create new object' Input Component
   const [isVisible, setVisible] = useState()
-  // Visibility for the 'edit object' form
+  // Visibility for the 'Edit Object' Input Component
   const [isEditVisible, setEditVisible] = useState()
-  // Start page visibility 
+  // Visibility for the Start Page
   const [isStartPageVisible, setIsStartPageVisible] = useState(true)
+
   // Id of the object to be edited
   const [editObject, setEditObject] = useState([])
   // State for the favourites 
   const [faveArray, setfaveArray] = useState([])
-  // State for languages
-  const [language, setLanguage] = useState('englishDefinitions')
 
 
-  // Uncomment to store favourites in local storage (& add JSON.parse code inside the faveArray useState)
 
-      // useEffect(() => {
-      //   localStorage.setItem('fave', JSON.stringify(faveArray));
-      // }, [faveArray]);
-      
-      // [JSON.parse(localStorage.getItem('fave'))]
 
+
+  // change the language from a button click on either startpage or header
+
+  function handleLanguage(e) {
+    setLanguage(e.target.name)
+    changeStartState();
+    setObject([]);
+  }
+
+  // Function that sets the editObject state to be the id of the item to edit (passed down to object list and mapped to object items) 
+  // also calls the function that makes the edit input box visible 
+  
+  function handleObjectState(object) {
+    console.log("handleObjectState - line 50", object)
+    handleVisibilityEdit();
+    setEditObject(object);
+    console.log("handleObjectState - line 53", object)
+  }
+
+  // function that is passed down to the filter bar that takes in the state of the the text input in the main search bar (English Search Bar)
+   
+  function handleChange(e) {
+    setInput(e.target.value);
+  }
+
+  // function that is passed down to the filter bar that takes in the state of the the text input in the translate search bar (Foreign Search Bar)
+   
+  function handleTranslateSearch(e) {
+    setTranslateSearch(e.target.value);
+  }
+
+  // function that: if no search input, runs get all and sorts objects alphabetically by title (when clicking search button); if there is search input, runs getByTitle function
+
+  async function handleClick() {
+    if (!input) {
+      handleGetAll()
+    } else {
+      const titleObject = await getByTitle();
+      setObject(titleObject);
+    }
+  }
+
+  // function that: if no translated search input, runs get all and sorts objects alphabetically by title (when clicking search button); if there is translated search input, runs getByForeignTitle function
+
+  async function handleTranslation() {
+    if (!translateSearch) {
+      handleGetAll()
+    } else {
+      const titleObject = await getByForeignTitle();
+      setObject(titleObject);
+    }
+  }
+
+  // Function to get all when no input has been entered in the searchbar.
+
+  async function handleGetAll() {
+    const objects = await getAllObjects();
+    const sortedObjects = objects.sort((a, b) => a.title?.localeCompare(b.title));   
+    setObject(sortedObjects);
+  }
 
   // fetch request for all objects (called inside handleClick)
 
@@ -77,30 +133,17 @@ function App() {
     setObject(objectToAddOnScreen);
   }
 
-  // function that: toggles whether the 'Add New Resource' box is visible or not (toggled on button click); calls the addingNotEditing function; sets the wholeEditObject array to empty array (resetting input fields for add new resource)
-
-  const handleVisibility = event => {
-    setVisible(current => !current);
-    setEditObject([])
-  }
-
   // edit request for specific object (handed down edit-sepcific input component)
 
   async function handleEdit(changes) {
     const targetEditObject = object.filter(itemToEdit => { return itemToEdit.id === editObject.id })
     const editedItem = createEditObject(targetEditObject, changes)
-    await fetch(`${url}/${language}/${editObject}`, {
+    console.log(editedItem)
+    await fetch(`${url}/${language}/${editObject.id}`, {
       method: 'PATCH',
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(editedItem[0])
     })
-  }
-
-  // Function that sets the editObject state to be the id of the item to edit (passed down to object list and mapped to object items) & calls the function that makes the edit input box visible 
-  
-  function handleObjectState(object) {
-    setEditObject(object);
-    handleVisibilityEdit();
   }
 
   // function that creates a new edited object (if values empty, original ones are kept) - called inside handleEdit 
@@ -140,12 +183,6 @@ function App() {
     return original
   }
 
-  // function that toggles whether the 'Edit' box is visible or not (toggled on button click)
-
-  const handleVisibilityEdit = event => {
-    setEditVisible(current => !current);
-  }
-  
   // delete request for specific object (handed down to object list component and then object component)
 
   async function handleDelete(id) {
@@ -158,46 +195,6 @@ function App() {
         setObject(deleted);
       }
     } return
-  }
-
-  // function that: if no search input, runs get all and sorts objects alphabetically by title (when clicking search button); if there is search input, runs getByTitle function
-
-  async function handleClick() {
-    if (!input) {
-      const objects = await getAllObjects()
-      const sortedObjects = objects.sort((a, b) =>
-        a.title?.localeCompare(b.title));
-      setObject(sortedObjects);
-    } else {
-      const titleObject = await getByTitle();
-      setObject(titleObject);
-    }
-  }
-
-  // function that: if no translated search input, runs get all and sorts objects alphabetically by title (when clicking search button); if there is translated search input, runs getByForeignTitle function
-
-  async function handleTranslation() {
-    if (!translateSearch) {
-      const objects = await getAllObjects();
-      const sortedObjects = objects.sort((a, b) =>
-        a.title?.localeCompare(b.title));
-      setObject(sortedObjects);
-    } else {
-      const titleObject = await getByForeignTitle();
-      setObject(titleObject);
-    }
-  }
-
-  // function that is passed down to the filter bar that takes in the state of the the text input in the main search bar 
-
-  function handleChange(e) {
-    setInput(e.target.value);
-  }
-
-  // function that is passed down to the filter bar that takes in the state of the the text input in the translate search bar 
-
-  function handleTranslateSearch(e) {
-    setTranslateSearch(e.target.value);
   }
 
   // function that sorts the objects in ascending order (by week)
@@ -223,12 +220,18 @@ function App() {
     setObject(faveArray);
   }
 
-  // change the language from a button click on either startpage or header
+  // function that: toggles whether the 'Add New Resource' box is visible or not (toggled on button click); calls the addingNotEditing function; sets the wholeEditObject array to empty array (resetting input fields for add new resource)
 
-  function handleLanguage(e) {
-    setLanguage(e.target.name)
-    changeStartState();
-    setObject([]);
+  const handleVisibility = event => {
+    setVisible(current => !current);
+    setEditObject([])
+  }
+
+  // function that toggles whether the 'Edit' box is visible or not (toggled on button click)
+
+  const handleVisibilityEdit = event => {
+    setEditVisible(current => !current);
+    setEditObject({})
   }
 
   // function that toggles whether the StartPage is visible or not 
@@ -237,7 +240,7 @@ function App() {
     if (isStartPageVisible) {
       setIsStartPageVisible(current => !current);
     }
-  };
+  }
 
   return (
     <div className="App">
