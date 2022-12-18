@@ -150,34 +150,13 @@ function App() {
 
   function createEditObject(original, newEdit) {
 
-    if (language === 'englishDefinitions') {
+    const keys = Object.keys(newEdit)
 
-      if (newEdit.title) {
-        original[0].title = newEdit.title
-      } if (newEdit.definition) {
-        original[0].definition = newEdit.definition
-      } if (newEdit.example) {
-        original[0].example = newEdit.example
-      } if (newEdit.links) {
-        original[0].links = newEdit.links
-      } if (newEdit.week) {
-        original[0].week = newEdit.week
-      }
-    
-    } else {
+    for (let i = 0; i < keys.length; i++){
 
-      if (newEdit.englishtitle) {
-        original[0].englishtitle = newEdit.englishtitle
-      } if (newEdit.title) {
-        original[0].title = newEdit.title
-      } if (newEdit.definition) {
-        original[0].definition = newEdit.definition
-      } if (newEdit.example) {
-        original[0].example = newEdit.example
-      } if (newEdit.links) {
-        original[0].links = newEdit.links
-      } if (newEdit.week) {
-        original[0].week = newEdit.week
+      if(newEdit[keys[i]]){
+        
+      original[0][keys[i]] = newEdit[keys[i]] 
       }
     }
     return original
