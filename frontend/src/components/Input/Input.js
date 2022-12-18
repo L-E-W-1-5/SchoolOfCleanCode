@@ -18,7 +18,6 @@ const {
     props.visibility()
     reset()
   };
-console.log("Input component", props.wholeEditObject.englishtitle)
     
     return (
     <div className="form-items">
@@ -29,13 +28,13 @@ console.log("Input component", props.wholeEditObject.englishtitle)
 
                 {props.language !== "englishDefinitions" && <label>English Title</label>}
                 {props.language !== "englishDefinitions" && <input 
-                type="text" 
-                name="englishtitle" 
-                {...register("englishtitle", {
-                    required: props.required,
-                    minLength: 3
-                })} 
-                defaultValue={props.wholeEditObject.englishtitle}>
+                    type="text" 
+                    name="englishtitle" 
+                    {...register("englishtitle", {
+                        required: props.required,
+                        minLength: 3
+                    })} 
+                    defaultValue={props.wholeEditObject.englishtitle}>
                 </input>}
                 {errors.englishtitle && errors.englishtitle.type === "required" && (
                     <p className='error'>Title must not be blank</p>
@@ -46,13 +45,13 @@ console.log("Input component", props.wholeEditObject.englishtitle)
 
                 <label>Title</label>
                 <input 
-                type="text" 
-                name="title" 
-                {...register("title", {
-                    required: props.required,
-                    minLength: 3, 
-                })} 
-                defaultValue={props.wholeEditObject.title}>
+                    type="text" 
+                    name="title" 
+                    {...register("title", {
+                        required: props.required,
+                        minLength: 3, 
+                    })} 
+                    defaultValue={props.wholeEditObject.title}>
                 </input> 
                 {errors.title && errors.title.type === "required" && (
                     <p className='error'>Title must not be blank</p>
@@ -63,13 +62,13 @@ console.log("Input component", props.wholeEditObject.englishtitle)
 
                 <label>Definition</label>
                 <input 
-                type="text" 
-                name="definition" 
-                {...register("definition", {
-                    required: props.required,
-                    minLength: 20
-                })} 
-                defaultValue={props.wholeEditObject.definition}>
+                    type="text" 
+                    name="definition" 
+                    {...register("definition", {
+                        required: props.required,
+                        minLength: 20
+                    })} 
+                    defaultValue={props.wholeEditObject.definition}>
                 </input>
                 {errors.definition && errors.definition.type === "required" && (
                     <p className='error'>Definition must not be blank</p>
@@ -80,12 +79,12 @@ console.log("Input component", props.wholeEditObject.englishtitle)
 
                 <label>Example</label>
                 <input 
-                type="text" 
-                name="example" {...register("example", {
-                    required: props.required,
-                    minLength: 10
-                })} 
-                defaultValue={props.wholeEditObject.example}>
+                    type="text" 
+                    name="example" {...register("example", {
+                        required: props.required,
+                        minLength: 10
+                    })} 
+                    defaultValue={props.wholeEditObject.example}>
                 </input>
                 {errors.example && errors.example.type === "required" && (
                     <p className='error'>Example must not be blank</p>
@@ -96,12 +95,12 @@ console.log("Input component", props.wholeEditObject.englishtitle)
 
                 <label>Links</label>
                 <input 
-                type="text" 
-                name="links" {...register("links", {
-                    required: props.required,
-                    minLength: 10
-                })} 
-                defaultValue={props.wholeEditObject.links}>
+                    type="text" 
+                    name="links" {...register("links", {
+                        required: props.required,
+                        minLength: 10
+                    })} 
+                    defaultValue={props.wholeEditObject.links}>
                 </input>
                 {errors.links && errors.links.type === "required" && (
                     <p className='error'>Link must not be blank</p>
@@ -112,13 +111,13 @@ console.log("Input component", props.wholeEditObject.englishtitle)
 
                 <label>Week</label>
                 <input 
-                type="number"
-                min="0"
-                max="16"
-                name="week" {...register("week", {
-                    required: props.required
-                })} 
-                defaultValue={props.wholeEditObject.week}>
+                    type="number"
+                    min="0"
+                    max="16"
+                    name="week" {...register("week", {
+                        required: props.required
+                    })} 
+                    defaultValue={props.wholeEditObject.week}>
                 </input>
                 {errors.week && errors.week.type === "required" && (
                     <p className='error'>Week must not be blank</p>

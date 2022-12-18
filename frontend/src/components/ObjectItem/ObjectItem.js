@@ -6,6 +6,7 @@ import './ObjectItem.css'
 export function ObjectItem(props) {
 
     function onClicks() {
+
         props.handleEdit()
     }
 
@@ -17,7 +18,6 @@ export function ObjectItem(props) {
                 <div className="titleDiv">
                     <h2 className="titles">{props.title}</h2>
                     <h2 className="titles">{props.englishTitle}</h2>
-
                 </div>
 
                 <p className='week'>Week {props.week}</p>
