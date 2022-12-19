@@ -1,10 +1,14 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import './Input.css'
 import { useForm } from "react-hook-form";
 
 // Input component creates two forms using using react hook form and data is used in handleNewObjct function (from app component) -- no need for state
 
 export function Input(props) {
+
+useEffect(() => {
+    reset()
+})
 
 const {
     register,
@@ -16,7 +20,6 @@ const {
   const onSubmit = (data) => {
     props.handleNewObject(data);
     props.visibility()
-    reset()
   };
     
     return (
@@ -26,16 +29,17 @@ const {
 
         <form onSubmit={handleSubmit(onSubmit)}>
 
-                {props.language !== "englishDefinitions" && <label>English Title</label>}
-                {props.language !== "englishDefinitions" && <input 
-                    type="text" 
-                    name="englishtitle" 
-                    {...register("englishtitle", {
-                        required: props.required,
-                        minLength: 3
-                    })} 
-                    defaultValue={props.wholeEditObject.englishtitle}>
-                </input>}
+                {props.language !== "englishDefinitions" && <div>
+                    <label>English Title</label>
+                    <input 
+                        type="text" 
+                        name="englishtitle" 
+                        {...register("englishtitle", {
+                            required: props.required,
+                            minLength: 3
+                        })} 
+                        defaultValue={props.wholeEditObject.englishtitle}>
+                    </input></div>}
                 {errors.englishtitle && errors.englishtitle.type === "required" && (
                     <p className='error'>Title must not be blank</p>
                 )}

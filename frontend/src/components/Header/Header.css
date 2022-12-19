@@ -4,14 +4,14 @@
 }
 
 .image {
-  width: 15vw;
+  width: 13vw;
   height: auto;
 }
 
 .headerButtons {
   display: flex;
-  margin-left: 1200px;
-  padding: 10px;
+  margin-left: 60vw;
+  padding: 5px;
 }
 
 .englishButton {

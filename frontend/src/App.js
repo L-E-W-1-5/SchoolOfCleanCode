@@ -50,7 +50,7 @@ function App() {
   // also calls the function that makes the edit input box visible 
   
   function handleObjectState(object) {
-
+    
     handleVisibilityEdit();
 
     setEditObject(object);
@@ -76,8 +76,8 @@ function App() {
 
     if (!input) {
 
-      handleGetAll()
-
+      handleGetAll()  // TODO: seperate this function out so that the getAll button will getAll regardless of whethere there's input in the serchbar.
+                              // Also create an error if search button is pressed with no input in the searchbar.
     } else {
 
       const titleObject = await getByTitle();
@@ -273,7 +273,7 @@ function App() {
   }
 
   return (
-    
+
     <div className="App">
       <div className="start-page" style={{ visibility: isStartPageVisible ? 'visible' : 'hidden' }}>
         <StartPage handleLanguage={handleLanguage}></StartPage>
