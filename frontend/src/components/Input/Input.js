@@ -1,16 +1,16 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import './Input.css'
 import { useForm } from "react-hook-form";
 
 // Input component creates two forms using using react hook form and data is used in handleNewObjct function (from app component) -- no need for state
 
 export function Input(props) {
-//const [useProps] = useState(props.language)
 
-//   useEffect(() => {
-//     reset()
-//     // eslint-disable-next-line react-hooks/exhaustive-deps
-//   }, [useProps])
+  useEffect(() => {
+
+        reset()
+    
+  }, [props.language])
 
   const {
     register,
@@ -22,7 +22,6 @@ export function Input(props) {
   const onSubmit = (data) => {
     props.handleNewObject(data);
     props.visibility()
-    reset()
   };
 
     return (
