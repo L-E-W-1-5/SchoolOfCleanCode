@@ -60,7 +60,7 @@ function App() {
    
   function handleChange(e) {
 
-    setInput(e.target.value);
+    setInput(e.target.value);  
   }
 
   // function that is passed down to the filter bar that takes in the state of the the text input in the translate search bar (Foreign Search Bar)
@@ -70,13 +70,41 @@ function App() {
     setTranslateSearch(e.target.value);
   }
 
+// function that: toggles whether the 'Add New Resource' box is visible or not (toggled on button click); calls the addingNotEditing function; sets the wholeEditObject array to empty array (resetting input fields for add new resource)
+
+const handleVisibility = event => {
+
+  setVisible(current => !current);
+
+  setEditObject([])
+}
+
+// function that toggles whether the 'Edit' box is visible or not (toggled on button click)
+
+const handleVisibilityEdit = event => {
+
+  setEditVisible(current => !current);
+
+  setEditObject({})
+}
+
+// function that toggles whether the StartPage is visible or not 
+
+const changeStartState = event => {
+
+  if (isStartPageVisible) {
+
+    setIsStartPageVisible(current => !current);
+  }
+}
+
   // function that: if no search input, runs get all and sorts objects alphabetically by title (when clicking search button); if there is search input, runs getByTitle function
 
   async function handleClick() {
 
     if (!input) {
 
-      handleGetAll()  // TODO: seperate this function out so that the getAll button will getAll regardless of whethere there's input in the serchbar.
+      handleGetAll()  // TODO: seperate this function out so that the getAll button will getAll regardless of whether there's input in the serchbar.
                               // Also create an error if search button is pressed with no input in the searchbar.
     } else {
 
@@ -119,7 +147,7 @@ function App() {
 
   async function getByTitle() {
 
-    const titleObject = await fetch(`${url}/${language}/${input}`);
+    const titleObject = await fetch(`${url}/${language}/${input}`);  // TODO: Make this and getByForeignTitle generic 
 
     let data = await titleObject.json();
 
@@ -167,8 +195,6 @@ function App() {
 
     const editedItem = createEditObject(targetEditObject, changes)
 
-    console.log(editedItem)
-
     await fetch(`${url}/${language}/${editObject.id}`, {
 
       method: 'PATCH',
@@ -198,6 +224,10 @@ function App() {
   // delete request for specific object (handed down to object list component and then object component)
 
   async function handleDelete(id) {
+
+    if(prompt("Are you sure you wish to delete this item?")){
+      alert("Deleted!")
+    }
 
     for (let i = 0; i < object.length; i++) {
 
@@ -244,33 +274,7 @@ function App() {
     setObject(faveArray);
   }
 
-  // function that: toggles whether the 'Add New Resource' box is visible or not (toggled on button click); calls the addingNotEditing function; sets the wholeEditObject array to empty array (resetting input fields for add new resource)
-
-  const handleVisibility = event => {
-
-    setVisible(current => !current);
-
-    setEditObject([])
-  }
-
-  // function that toggles whether the 'Edit' box is visible or not (toggled on button click)
-
-  const handleVisibilityEdit = event => {
-
-    setEditVisible(current => !current);
-
-    setEditObject({})
-  }
-
-  // function that toggles whether the StartPage is visible or not 
-
-  const changeStartState = event => {
-
-    if (isStartPageVisible) {
-
-      setIsStartPageVisible(current => !current);
-    }
-  }
+  
 
   return (
 
