@@ -6,7 +6,8 @@ import { ObjectList } from './components/ObjectList/ObjectList.js'
 import { StartPage } from './components/StartPage/StartPage.js'
 import { useState} from 'react'
 
-const url = "http://localhost:3001/api"
+//const url = "http://localhost:3001/api"
+const url = "https://across-the-globe-backend.onrender.com/"
 
 function App() {
 
