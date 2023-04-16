@@ -10,18 +10,28 @@ export function Input(props) {
 
         reset()
     
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.language])
+
+//   useEffect(() => {
+//        // reset the entire form after component mount or form defaultValues is ready
+//       reset({
+//          fieldA: "test", // TODO: Check if this is a better dependency for the useEffect
+//          fieldB: "test"
+//        });
+//      }, [reset])
 
   const {
     register,
     handleSubmit,
-    reset,
+    reset, 
     formState: { errors }
   } = useForm();
 
   const onSubmit = (data) => {
     props.handleNewObject(data);
     props.visibility()
+    reset()
   };
 
     return (
@@ -49,7 +59,7 @@ export function Input(props) {
                     <p className='error'>Title must have at least 4 characters</p>
                 )}
 
-                <label>Title</label>
+                <label>Title</label> 
                 <input 
                     type="text" 
                     name="title" 

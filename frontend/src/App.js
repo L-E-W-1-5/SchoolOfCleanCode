@@ -104,11 +104,11 @@ const changeStartState = event => {
 
     if (!input) {
 
-      handleGetAll()  // TODO: seperate this function out so that the getAll button will getAll regardless of whether there's input in the serchbar.
-                              // Also create an error if search button is pressed with no input in the searchbar.
+      handleGetAll()  // TODO: Seperate this function out so that the getAll button will getAll regardless of whether there's input in the serchbar.
+                              
     } else {
 
-      const titleObject = await getByTitle();
+      const titleObject = await getByTitle();  // TODO: Create an error if search button is pressed with no input in the searchbar.
 
       setObject(titleObject);
     }
@@ -225,7 +225,7 @@ const changeStartState = event => {
 
   async function handleDelete(id) {
 
-    if(prompt("Are you sure you wish to delete this item?")){
+    if(alert("Are you sure you wish to delete this item?")){ // TODO: Make this a yes/no box.
       alert("Deleted!")
     }
 
@@ -289,7 +289,7 @@ const changeStartState = event => {
         </div>
 
         <div className="search-bar">
-          <FilterBar foreignClick={handleTranslation} language={language} handleClick={handleClick} handleTranslate={handleTranslateSearch} handleChange={handleChange} handleSort={sortByWeek} displayFave={displayFavourite}></FilterBar>
+          <FilterBar language={language} foreignClick={handleTranslation} handleClick={handleClick} handleTranslate={handleTranslateSearch} handleChange={handleChange} handleSort={sortByWeek} displayFave={displayFavourite}></FilterBar>
         </div>
       </div>
 

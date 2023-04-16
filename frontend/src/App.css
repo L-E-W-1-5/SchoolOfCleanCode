@@ -4,6 +4,7 @@
   font-family: Georgia, serif;
   --darkColor: #1A1B41;
   --lightColor: #C2E7DA;
+  overflow-x: hidden;
 }
 
 

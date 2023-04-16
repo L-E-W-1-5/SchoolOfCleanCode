@@ -25,4 +25,3 @@ export function FilterBar(props) {
             </div>
         )
 }
-
