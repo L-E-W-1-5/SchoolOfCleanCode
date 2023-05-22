@@ -6,6 +6,8 @@ import { ObjectList } from './components/ObjectList/ObjectList.js'
 import { StartPage } from './components/StartPage/StartPage.js'
 import { useState} from 'react'
 
+import { useFetch } from './hooks/useFetch';
+
 //const url = "http://localhost:3001/api"
 const url = "https://across-the-globe-backend.onrender.com/api"
 
@@ -31,6 +33,16 @@ function App() {
   const [editObject, setEditObject] = useState([])
   // State for the favourites 
   const [faveArray, setfaveArray] = useState([])
+
+  const [ data,
+          setTitle,
+          setLanguageSearch,
+          setForeignTitle,
+          setAction,
+          setPostData
+        ] = useFetch()
+
+
 
 
 
@@ -249,7 +261,7 @@ const changeStartState = event => {
 
   function sortByWeek() {
 
-    let sortedObjects = [...object].sort(function (a, b) { return a.week - b.week });
+    let sortedObjects = [...object].sort((a, b) => { return a.week - b.week });
 
     setObject(sortedObjects);
   }
