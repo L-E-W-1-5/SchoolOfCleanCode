@@ -1,6 +1,7 @@
 import { useState, useEffect, useReducer } from "react";
 
-const url = "https://across-the-globe-backend.onrender.com/api"
+//const url = "https://across-the-globe-backend.onrender.com/api"
+const url = "http://localhost:3001/api"
 
 const options = {headers: {Accept: "application/json"}}
 
@@ -22,35 +23,31 @@ const reduce = (data, action) => {
                                     .then((res) => res.json())
                                     .catch((err) => console.log(err))}
         default:
-            return () => {data = fetch(`${url}`, options)
+            return fetch(`${url}/${action.language}`, options)
                             .then((res) => res.json())
                             .catch((err) => console.log(err))} 
     }
-}
+
 
 export const useFetch = () => {
-    const [language, setLanguage] = useState("");
-    const [title, setTitle] = useState("");
-    const [foreignTitle, setForeignTitle] = useState();
-    const [postData, setPostData] = useState();
-    const [request, setAction] = useState("");
+  
+    const [request, setAction] = useState();
     const [data, dispatch] = useReducer(reduce, "");
 
     useEffect(() => {
-        dispatch({  type: request, 
-                    details: title, 
-                    language: language, 
-                    foreignTitle: foreignTitle,
-                    postData: postData
+        if(request)
+        dispatch({  type: request.request, 
+                    details: request.title, 
+                    language: request.language, 
+                    foreignTitle: request.foreignTitle,
+                    postData: request.postData
                 })
-    }, [title, language, foreignTitle, request, postData]);
+    }, [request]);
 
     return {
         data: data,
-        setTitle: setTitle,
-        setLanguageSearch: setLanguage,
-        setForeignTitle: setForeignTitle,
+        
         setAction: setAction,
-        setPostData: setPostData
+       
     }
 }

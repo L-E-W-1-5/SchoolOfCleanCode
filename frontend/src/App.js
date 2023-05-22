@@ -4,12 +4,12 @@ import { Header } from './components/Header/Header.js'
 import { Input } from './components/Input/Input.js'
 import { ObjectList } from './components/ObjectList/ObjectList.js'
 import { StartPage } from './components/StartPage/StartPage.js'
-import { useState} from 'react'
+import { useState, useEffect} from 'react'
 
-import { useFetch } from './hooks/useFetch';
+import {useFetch} from './hooks/useFetch';
 
-//const url = "http://localhost:3001/api"
-const url = "https://across-the-globe-backend.onrender.com/api"
+const url = "http://localhost:3001/api"
+//const url = "https://across-the-globe-backend.onrender.com/api"
 
 function App() {
 
@@ -34,16 +34,26 @@ function App() {
   // State for the favourites 
   const [faveArray, setfaveArray] = useState([])
 
-  const [ data,
-          setTitle,
-          setLanguageSearch,
-          setForeignTitle,
+  const { data,   
           setAction,
-          setPostData
-        ] = useFetch()
+        } = useFetch()
 
 
+        useEffect(() => {
 
+          async function fetchData() {
+            
+          let fulfilled = await data 
+           
+          let res = fulfilled.payload.sort((a, b) => a.title?.localeCompare(b.title))
+            
+          setObject(res)
+          
+          }
+          if(data)
+          fetchData()
+          
+         }, [data])
 
 
 
@@ -147,13 +157,9 @@ const changeStartState = event => {
 
   async function handleGetAll() {
 
-    const objects = await fetch(`${url}/${language}`)  
-
-    let data = await objects.json();
-
-    const sortedObjects = data.payload.sort((a, b) => a.title?.localeCompare(b.title));   
-
-    setObject(sortedObjects);
+    setAction({request:'getAll',
+                language: language})
+                
   }
 
   // fetch request for specific object(s) (called inside handleClick)
