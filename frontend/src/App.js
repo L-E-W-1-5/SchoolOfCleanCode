@@ -20,7 +20,7 @@ function App() {
   // Input sent from FilterBar for the specific English get request
   const [input, setInput] = useState("")
   // Foreign search input sent from FilterBar for the specific get request
-  const [translateSearch, setTranslateSearch] = useState()
+  const [translateSearch, setTranslateSearch] = useState("")
 
   // Visibility for the 'create new object' Input Component
   const [isVisible, setVisible] = useState()
@@ -34,26 +34,28 @@ function App() {
   // State for the favourites 
   const [faveArray, setfaveArray] = useState([])
 
-  const { data,   
-          setAction,
-        } = useFetch()
+  const { data, setAction, } = useFetch()
+          
+        
 
 
         useEffect(() => {
 
           async function fetchData() {
             
-          let fulfilled = await data 
-           
-          let res = fulfilled.payload.sort((a, b) => a.title?.localeCompare(b.title))
-            
-          setObject(res)
-          
+           let fulfilled = await data;
+           console.log(fulfilled)
+
+           let result = fulfilled.payload.sort((a, b) =>
+              a.title?.localeCompare(b.title)
+            );
+
+            setObject(result);
           }
-          if(data)
-          fetchData()
-          
-         }, [data])
+
+          if (data) fetchData();
+
+        }, [data]);
 
 
 
@@ -123,66 +125,58 @@ const changeStartState = event => {
 
   // function that: if no search input, runs get all and sorts objects alphabetically by title (when clicking search button); if there is search input, runs getByTitle function
 
-  async function handleClick() {
+  async function handleClick(type) {
 
-    if (!input) {
+    if (type === 'getAll') {
 
       handleGetAll()  // TODO: Seperate this function out so that the getAll button will getAll regardless of whether there's input in the serchbar.
                               
-    } else {
+    } else if (type === 'getByTitle'){
 
-      const titleObject = await getByTitle();  // TODO: Create an error if search button is pressed with no input in the searchbar.
+      getByTitle();  // TODO: Create an error if search button is pressed with no input in the searchbar.
 
-      setObject(titleObject);
     }
   }
 
-  // function that: if no translated search input, runs get all and sorts objects alphabetically by title (when clicking search button); if there is translated search input, runs getByForeignTitle function
-
-  async function handleTranslation() {
-
-    if (!translateSearch) {
-
-      handleGetAll()
-
-    } else {
-
-      const titleObject = await getByForeignTitle();
-
-      setObject(titleObject);
-    }
-  }
 
   // Function to get all when no input has been entered in the searchbar, makes fetch request for all objects (called inside handleClick or handleTranslation)
 
   async function handleGetAll() {
 
-    setAction({request:'getAll',
-                language: language})
-                
+    setAction({ request:'getAll',
+                language: language
+              })           
   }
 
   // fetch request for specific object(s) (called inside handleClick)
 
   async function getByTitle() {
 
-    const titleObject = await fetch(`${url}/${language}/${input}`);  // TODO: Make this and getByForeignTitle generic 
+    if (language === 'englishDefinitions'){
 
-    let data = await titleObject.json();
+      if (input === ""){
+        alert('You must enter something in a search box to search by title.');
+        return;
+      }
 
-    return data.payload;
+      setAction({ request: 'getByTitle',
+                  language: language,
+                  title: input
+                })
+    }else{
+
+      if (translateSearch === ""){
+        alert('You must enter something in a search box to search by title.');
+        return;
+      }
+
+      setAction({ request: 'getByForeignTitle',
+                  language: language,
+                  title: translateSearch
+                })
+    }
   }
 
-  // fetch request for specific object(s) in non-English language (called inside handleTranslation)
-
-  async function getByForeignTitle() {
-
-    const titleObject = await fetch(`${url}/${language}/english/${translateSearch}`);
-
-    let data = await titleObject.json();
-
-    return data.payload;
-  }
 
   // post request for new object (handed down to input component)
 
@@ -308,7 +302,7 @@ const changeStartState = event => {
         </div>
 
         <div className="search-bar">
-          <FilterBar language={language} foreignClick={handleTranslation} handleClick={handleClick} handleTranslate={handleTranslateSearch} handleChange={handleChange} handleSort={sortByWeek} displayFave={displayFavourite}></FilterBar>
+          <FilterBar language={language} handleClick={handleClick} handleTranslate={handleTranslateSearch} handleChange={handleChange} handleSort={sortByWeek} displayFave={displayFavourite}></FilterBar>
         </div>
       </div>
 

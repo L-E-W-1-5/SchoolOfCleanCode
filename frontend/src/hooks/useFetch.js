@@ -8,13 +8,13 @@ const options = {headers: {Accept: "application/json"}}
 const reduce = (data, action) => {
     switch (action.type){
         case 'getByTitle':
-            return () => {data = fetch(`${url}/${action.language}/${action.details}`, options)
+            return fetch(`${url}/${action.language}/${action.title}`, options)
                                     .then((res) => res.json())
-                                    .catch((err) => console.log(err))}
+                                    .catch((err) => console.log(err))
         case 'getByForeignTitle':
-            return () => {data = fetch(`${url}/${action.language}/english/${action.foreignTitle}`, options)
+            return fetch(`${url}/${action.language}/english/${action.foreignTitle}`, options)
                                     .then((res) => res.json())
-                                    .catch((err) => console.log(err))}
+                                    .catch((err) => console.log(err))
         case 'post':
             return () => {data = fetch(`${url}/${action.language}/${action.foreignTitle}`,
                                              {method: "POST", 
@@ -35,19 +35,20 @@ export const useFetch = () => {
     const [data, dispatch] = useReducer(reduce, "");
 
     useEffect(() => {
+
         if(request)
+
         dispatch({  type: request.request, 
-                    details: request.title, 
+                    title: request.title, 
                     language: request.language, 
                     foreignTitle: request.foreignTitle,
                     postData: request.postData
                 })
+
     }, [request]);
 
     return {
-        data: data,
-        
+        data: data,      
         setAction: setAction,
-       
     }
 }

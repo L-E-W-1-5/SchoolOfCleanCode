@@ -6,12 +6,20 @@ import { useForm } from "react-hook-form";
 
 export function Input(props) {
 
+    const {
+        register,
+        handleSubmit,
+        reset, 
+        formState: { errors }
+      } = useForm();
+
+      
+
   useEffect(() => {
 
         reset()
     
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.language])
+  }, [props.language, reset])
 
 //   useEffect(() => {
 //        // reset the entire form after component mount or form defaultValues is ready
@@ -21,12 +29,7 @@ export function Input(props) {
 //        });
 //      }, [reset])
 
-  const {
-    register,
-    handleSubmit,
-    reset, 
-    formState: { errors }
-  } = useForm();
+ 
 
   const onSubmit = (data) => {
     props.handleNewObject(data);
